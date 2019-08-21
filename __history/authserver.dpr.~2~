@@ -1,0 +1,16 @@
+program authserver;
+
+uses
+  Vcl.Forms,
+  uMain in 'uMain.pas' {fMain},
+  uDM in 'uDM.pas' {DM1: TDataModule};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TfMain, fMain);
+  Application.CreateForm(TDM1, DM1);
+  Application.Run;
+end.

@@ -1,0 +1,35 @@
+unit uAuthCode;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls,
+  Vcl.ComCtrls, Vcl.ToolWin;
+
+type
+  TfauthCode = class(TForm)
+    memCode: TMemo;
+    ToolBar1: TToolBar;
+    StatusBar1: TStatusBar;
+    edtAppID: TEdit;
+    Label1: TLabel;
+    Label2: TLabel;
+    edtLength: TEdit;
+    Label3: TLabel;
+    edtCount: TEdit;
+    btnCreateCode: TBitBtn;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  fauthCode: TfauthCode;
+
+implementation
+
+{$R *.dfm}
+
+end.

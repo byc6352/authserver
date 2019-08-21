@@ -1,0 +1,53 @@
+unit uAuthCode;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls,uDM,
+  Vcl.ComCtrls, Vcl.ToolWin;
+
+type
+  TfauthCode = class(TForm)
+    memCode: TMemo;
+    ToolBar1: TToolBar;
+    StatusBar1: TStatusBar;
+    edtAppID: TEdit;
+    Label1: TLabel;
+    Label2: TLabel;
+    edtLength: TEdit;
+    Label3: TLabel;
+    edtCount: TEdit;
+    btnCreateCode: TBitBtn;
+  private
+    { Private declarations }
+
+  public
+    { Public declarations }
+  end;
+
+var
+  fauthCode: TfauthCode;
+  function createRandomNum():integer;
+  function createCode():string;
+implementation
+
+{$R *.dfm}
+function createCode():string;
+var
+  i:integer;
+  n:string;
+begin
+  result:='';
+  for I := 1 to 12 do
+  begin
+    n:=inttostr(createRandomNum());
+    result:=result+n;
+  end;
+end;
+function createRandomNum():integer;
+begin
+  Randomize;
+  result:=random(9);
+end;
+end.

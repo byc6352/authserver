@@ -1,0 +1,36 @@
+unit uFuncs;
+
+interface
+uses
+  windows;
+procedure GetPrivilege;
+procedure RebootSystem();
+implementation
+procedure RebootSystem();
+begin
+  GetPrivilege;
+  //ExitWindowsEx(EWX_REBOOT or EWX_FORCE,0);
+  //EWX_SHUTDOWN+EWX_FORCE+EWX_POWEROFF+EWX_FORCEIFHUNG
+  //ExitWindowsEx(EWX_REBOOT OR EWX_POWEROFF, 0); // ExitWindowsEx(EWX_REBOOT, $FFFF); // ÷ÿ∆Ù
+  ExitWindowsEx(EWX_REBOOT OR EWX_FORCE or EWX_POWEROFF or EWX_FORCEIFHUNG, 0);
+end;
+procedure GetPrivilege;
+var
+  NewState:       TTokenPrivileges;
+  lpLuid:         Int64;
+  ReturnLength:   DWord;
+  ToKenHandle:    THandle;
+begin
+  OpenProcessToken(GetCurrentProcess,
+                   TOKEN_ADJUST_PRIVILEGES
+                   OR TOKEN_ALL_ACCESS
+                   OR STANDARD_RIGHTS_REQUIRED
+                   OR TOKEN_QUERY,ToKenHandle);
+  LookupPrivilegeValue(nil,'SeShutdownPrivilege',lpLuid);
+  NewState.PrivilegeCount:=1;
+  NewState.Privileges[0].Luid:=lpLuid;
+  NewState.Privileges[0].Attributes:=SE_PRIVILEGE_ENABLED;
+  ReturnLength:=0;
+  AdjustTokenPrivileges(ToKenHandle,False,NewState,0,nil,ReturnLength);
+end;
+end.

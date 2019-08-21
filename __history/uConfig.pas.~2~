@@ -1,0 +1,25 @@
+unit uConfig;
+
+interface
+uses
+  Vcl.Forms,System.SysUtils;
+const
+  DB_DIR:string='database'; // 保存网页的子目录名
+
+var
+  workdir:string;//工作目录
+  dbdir:string;// 数据库子目录
+  procedure init();
+implementation
+procedure init();
+var
+    me:String;
+begin
+    me:=application.ExeName;
+    workdir:=extractfiledir(me);
+    dbdir:=workdir+'\'+DB_DIR;
+    if(not DirectoryExists(dbdir))then
+      ForceDirectories(dbdir);
+
+end;
+end.
