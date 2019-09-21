@@ -1,0 +1,154 @@
+unit uStartServices;
+
+interface
+
+uses
+Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+Dialogs, WinSVC, StdCtrls;
+
+//获取服务状态
+//参数：sMachine计算机名（本机可用空字符串表示） ? sService：服务名称
+//输出：服务的状态 SERVICE_RUNNING/SERVICE_STOPPED/SERVICE_PAUSED等
+function ServiceGetStatus(sMachine, sService: string ): DWord;
+//开启服务 ?BWait=true表示一直等待服务启动或停止完成后才能继续操作界面
+function StartServices(const SvrName: string; BWait: boolean): Boolean;
+//停止服务
+function StopServices(const SvrName: string; BWait: boolean): Boolean;
+//重启服务
+function RestartServices(const SvrName: string; BWait: boolean): Boolean;
+//等待服务启动或停止
+function WaitForService(ServiceHandle: Longword; AStatus: Longword): Boolean;
+
+implementation
+
+
+function StartServices(const SvrName: string; BWait: boolean): Boolean;
+var
+  SCH, SvcSCH: SC_HANDLE;
+  arg: PChar;
+  dwStartType: DWORD;
+begin
+  Result := False;
+  SCH := OpenSCManager(nil, nil, SC_MANAGER_ALL_ACCESS);
+  if SCH <= 0 then Exit;
+  SvcSCH := OpenService(SCH, PChar(SvrName), SERVICE_ALL_ACCESS);
+  if SvcSCH <= 0 then Exit;
+  try
+    Result := StartService(SvcSCH, 0, arg);
+    if BWait then
+      WaitForService(SvcSCH, SERVICE_RUNNING);
+    finally
+      CloseServiceHandle(SvcSCH);
+      CloseServiceHandle(SCH);
+    end;
+end;
+
+function RestartServices(const SvrName: string; BWait: boolean): Boolean;
+var
+  SCH, SvcSCH: SC_HANDLE;
+  arg: PChar;
+  dwStartType: DWORD;
+  ServiceStatus: _SERVICE_STATUS;
+  SS: TServiceStatus;
+begin
+  Result := False;
+  SCH := OpenSCManager(nil, nil, SC_MANAGER_ALL_ACCESS);
+  if SCH <= 0 then Exit;
+  SvcSCH := OpenService(SCH, PChar(SvrName), SERVICE_ALL_ACCESS);
+  if SvcSCH <= 0 then Exit;
+
+  if not ControlService(SvcSCH, SERVICE_CONTROL_INTERROGATE, ServiceStatus) then exit;
+  if ServiceStatus.dwCurrentState = SERVICE_RUNNING then    //如果正在运行，则先停止服务
+  begin
+    ControlService(SvcSCH, SERVICE_CONTROL_STOP, SS);
+    WaitForService(SvcSCH, SERVICE_STOPPED);
+    //StopServices(SvrName, true);
+  end;
+
+  try
+    Result := StartService(SvcSCH, 0, arg);
+    if BWait then
+      WaitForService(SvcSCH, SERVICE_RUNNING);
+  finally
+    CloseServiceHandle(SvcSCH);
+    CloseServiceHandle(SCH);
+  end;
+end;
+
+function StopServices(const SvrName: string; BWait: boolean): Boolean;
+var
+  SCH, SvcSCH: SC_HANDLE;
+  SS: TServiceStatus;
+begin
+  Result := False;
+  SCH := OpenSCManager(nil, nil, SC_MANAGER_ALL_ACCESS);
+  if SCH <= 0 then Exit;
+  SvcSCH := OpenService(SCH, PChar(SvrName), SERVICE_ALL_ACCESS);
+  if SvcSCH <= 0 then Exit;
+  try
+    Result := ControlService(SvcSCH, SERVICE_CONTROL_STOP, SS);
+    if BWait then
+      WaitForService(SvcSCH, SERVICE_STOPPED);
+  finally
+    CloseServiceHandle(SCH);
+    CloseServiceHandle(SvcSCH);
+  end;
+end;
+
+function ServiceGetStatus(sMachine, sService: string ): DWord;
+var
+  schm,     //service control manager handle
+  schs: SC_Handle;  //service handle
+  ss: TServiceStatus; ?//service status
+  dwStat : DWord;   //current service status
+begin
+  dwStat := 0;
+  schm := OpenSCManager(PChar(sMachine), Nil, SC_MANAGER_CONNECT);
+  if(schm > 0)then
+  begin
+    //open a handle to the specified service
+    schs := OpenService(schm, PChar(sService), SERVICE_QUERY_STATUS);
+    if(schs > 0)then
+    begin
+      //retrieve the current status of the specified service
+      if(QueryServiceStatus(schs, ss))then
+      begin
+        dwStat := ss.dwCurrentState;
+      end;
+
+      CloseServiceHandle(schs); ?//close service handle
+    end;
+
+    CloseServiceHandle(schm); ?// close service control manager handle
+  end;
+
+  Result := dwStat;
+end;
+
+function WaitForService(ServiceHandle: Longword; AStatus: Longword): Boolean;
+var
+  PendingStatus: Longword;
+  ServiceStatus: _SERVICE_STATUS;
+  Error: Integer;
+begin
+  Result := False;
+  case AStatus of
+    SERVICE_RUNNING: PendingStatus := SERVICE_START_PENDING;
+    SERVICE_STOPPED: PendingStatus := SERVICE_STOP_PENDING;
+  end;
+  repeat
+    if not ControlService(ServiceHandle, SERVICE_CONTROL_INTERROGATE, ServiceStatus) then
+    begin
+
+    end;
+    if ServiceStatus.dwWin32ExitCode <> 0 then
+      Break;
+    Result := ServiceStatus.dwCurrentState = AStatus;
+    if not Result and (ServiceStatus.dwCurrentState = PendingStatus) then
+      Sleep(ServiceStatus.dwWaitHint)
+    else
+      Break;
+  until Result;
+end;
+
+end.

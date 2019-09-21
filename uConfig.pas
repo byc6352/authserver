@@ -4,12 +4,16 @@ interface
 uses
   Vcl.Forms,System.SysUtils;
 const
-  DB_DIR:string='database'; // 保存网页的子目录名
+  WORK_DIR:string='authserver';
+  DB_DIR:string='database'; //
+  DU_DIR:string='dumeter';
   DB_NAME:string='author.mdb';
   LOG_NAME:string='authLog.txt';
+  DU_NAME:string='DUMeter.exe';
+
 var
   workdir:string;//工作目录
-  dbdir,dbfile,dbConn,logfile:string;// 数据库子目录,数据库
+  dbdir,dudir,dbfile,dbConn,logfile,duFile:string;// 数据库子目录,数据库
   isInit:boolean=false;
   procedure init();
 implementation
@@ -19,10 +23,12 @@ var
 begin
   isInit:=true;
     me:=application.ExeName;
-    workdir:=extractfiledir(me);
+    workdir:=extractfiledir(me)+'\'+WORK_DIR;
     dbdir:=workdir+'\'+DB_DIR;
-    if(not DirectoryExists(dbdir))then
-      ForceDirectories(dbdir);
+    if(not DirectoryExists(dbdir))then ForceDirectories(dbdir);
+    dudir:=workdir+'\'+DU_DIR;
+    if(not DirectoryExists(dudir))then ForceDirectories(dudir);
+    dufile:=dudir+'\'+DU_NAME;
     dbfile:=dbdir+'\'+DB_NAME;
     logfile:=workdir+'\'+LOG_NAME;
     //D:\works\delphi\authserver\Win32\Debug\database\author.mdb

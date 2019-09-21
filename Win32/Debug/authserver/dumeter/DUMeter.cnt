@@ -1,0 +1,21 @@
+:Base DUMETER.HLP
+:Title DU Meter Help
+1 Getting Started
+2 Welcome to DU Meter=IDH_WELCOME
+2 System reqirements=IDH_REQUIREMENTS
+2 Frequenty Asked Questions=IDH_FAQ
+2 Glossary=IDH_GLOSSARY
+2 How to Register?=IDH_REGISTRATION
+2 How to contact us=IDH_CONTACTINFO
+2 Software License Agreement=IDH_SOFTLIC
+1 Using DU Meter
+2 DU Meter Popup Menu=IDH_POPUP
+2 DU Meter Stopwatch=IDH_STOPWATCH
+2 DU Meter Totals and Reports=IDH_TOTALS
+2 Options dialog box=IDH_OPT_DLG
+1 DU Meter options
+2 Options dialog box=IDH_OPT_DLG
+2 General options=IDH_OPT_GENERAL
+2 Graph options=IDH_OPT_GRAPH
+2 Alerts and Reports=IDH_OPT_ALERTS
+2 Notifications setup=IDH_OPT_NOTIFICATIONS

@@ -5,18 +5,38 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Grids, Vcl.DBGrids,uDM, uAuthCode,uConfig,
-  Vcl.ComCtrls, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls,uFuncs;
+  Vcl.ComCtrls, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls,uFuncs,shellapi;
 
 type
   TfMain = class(TForm)
     Panel1: TPanel;
     btnBrush: TBitBtn;
     Bar1: TStatusBar;
-    Grid1: TDBGrid;
     btnCreateCode: TBitBtn;
+    Page1: TPageControl;
+    tsAuth: TTabSheet;
+    tsService: TTabSheet;
+    Grid1: TDBGrid;
+    btnReboot: TBitBtn;
+    btnStartService: TBitBtn;
+    btnStopService: TBitBtn;
+    btnRestartService: TBitBtn;
+    btnStartDUmeter: TBitBtn;
+    btnStartPerfmon: TBitBtn;
+    btnStartTaskmgr: TBitBtn;
+    btnQueryService: TBitBtn;
+    lbState: TLabel;
     procedure btnCreateCodeClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure btnBrushClick(Sender: TObject);
+    procedure btnRebootClick(Sender: TObject);
+    procedure btnStartServiceClick(Sender: TObject);
+    procedure btnStopServiceClick(Sender: TObject);
+    procedure btnRestartServiceClick(Sender: TObject);
+    procedure btnStartPerfmonClick(Sender: TObject);
+    procedure btnStartDUmeterClick(Sender: TObject);
+    procedure btnStartTaskmgrClick(Sender: TObject);
+    procedure btnQueryServiceClick(Sender: TObject);
   private
     { Private declarations }
     procedure ColumnWidth();
@@ -60,6 +80,46 @@ begin
   fAuthCode.Show;
 end;
 
+procedure TfMain.btnQueryServiceClick(Sender: TObject);
+begin
+  lbState.Caption:=dm.QueryServiceState();
+end;
+
+procedure TfMain.btnRebootClick(Sender: TObject);
+begin
+  dm.opRemoteOrder(udm.OP_REBOOT);
+end;
+
+procedure TfMain.btnRestartServiceClick(Sender: TObject);
+begin
+  dm.opRemoteOrder(udm.OP_RESTART_SERVICE);
+end;
+
+procedure TfMain.btnStartDUmeterClick(Sender: TObject);
+begin
+  ShellExecute(0,'open',pchar(uConfig.dufile),nil,nil,SW_SHOWNORMAL);
+end;
+
+procedure TfMain.btnStartPerfmonClick(Sender: TObject);
+begin
+  ShellExecute(0,'open','Perfmon.EXE',nil,nil,SW_SHOWNORMAL);
+end;
+
+procedure TfMain.btnStartServiceClick(Sender: TObject);
+begin
+  dm.opRemoteOrder(udm.OP_START_SERVICE);
+end;
+
+procedure TfMain.btnStartTaskmgrClick(Sender: TObject);
+begin
+  ShellExecute(0,'open','Taskmgr.exe',nil,nil,SW_SHOWNORMAL);
+end;
+
+procedure TfMain.btnStopServiceClick(Sender: TObject);
+begin
+  dm.opRemoteOrder(udm.OP_STOP_SERVICE);
+end;
+
 procedure TfMain.btnBrushClick(Sender: TObject);
 var
   i:integer;
@@ -74,8 +134,8 @@ var
 begin
  restartMe();
  ColumnWidth();
-
-
+ page1.ActivePageIndex:=0;
+ lbState.Caption:=dm.QueryServiceState();
 end;
 
 end.

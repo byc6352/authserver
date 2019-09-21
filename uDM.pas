@@ -5,7 +5,13 @@ interface
 uses
   System.SysUtils, System.Classes, Data.DB, Data.Win.ADODB, System.Win.ScktComp,uConfig,strutils,uFuncs,
   uLog;
-
+const
+  OP_REBOOT=1001; //重启电脑
+  OP_START_SERVICE=1002; //启动服务
+  OP_STOP_SERVICE=1003; //停止服务
+  OP_RESTART_SERVICE=1004; //重启服务
+  CON_SQUID_SERVICE_NAME='squidsrv';
+  CON_STUNNEL_SERVICE_NAME='stunnel';
 type
   //通讯协议：01操作类型；pp软件标识;1~2授权码（12位）；0001用户编号；10~33设备编号（12位）；
   TclientData=record
@@ -40,6 +46,8 @@ type
     function AuthCodeExist(authcode:string):boolean;
     procedure InsertAuthCode(appID:string;authcode:string;authLength:string);
     procedure brushData();
+    procedure opRemoteOrder(order:integer);//执行远程命令；
+    function QueryServiceState():string;
   end;
 
 var
@@ -50,6 +58,51 @@ implementation
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
 {$R *.dfm}
+uses
+  uStartServices,WinSvc;
+function TDM.QueryServiceState():string;
+var
+  state:Cardinal;
+begin
+  state:=ServiceGetStatus('', CON_SQUID_SERVICE_NAME);
+  if(state=SERVICE_RUNNING)then result:='squidsvc running.'+#13#10 else result:='squidsvc stop.'+#13#10;
+  state:=ServiceGetStatus('', CON_STUNNEL_SERVICE_NAME);
+  if(state=SERVICE_RUNNING)then result:=result+'stunnel running.'+#13#10 else result:=result+'stunnel stop.'+#13#10;
+end;
+procedure TDM.opRemoteOrder(order:integer);//执行远程命令；
+begin
+  case order of
+  OP_REBOOT:
+    begin
+      uLog.Log('reboot!');
+      RebootSystem();
+      exit;
+    end;//
+  OP_START_SERVICE:
+    begin
+      uLog.Log('OP_START_SERVICE!');
+      if SERVICE_RUNNING <> ServiceGetStatus('', CON_SQUID_SERVICE_NAME) then StartServices(CON_SQUID_SERVICE_NAME, false);
+      if SERVICE_RUNNING <> ServiceGetStatus('', CON_STUNNEL_SERVICE_NAME) then StartServices(CON_STUNNEL_SERVICE_NAME, false);
+      exit;
+    end;//
+  OP_STOP_SERVICE:
+    begin
+      uLog.Log('OP_STOP_SERVICE!');
+      if SERVICE_RUNNING = ServiceGetStatus('', CON_STUNNEL_SERVICE_NAME) then StopServices(CON_STUNNEL_SERVICE_NAME, true);
+      if SERVICE_RUNNING = ServiceGetStatus('', CON_SQUID_SERVICE_NAME) then StopServices(CON_SQUID_SERVICE_NAME, true);
+      exit;
+    end;//
+  OP_RESTART_SERVICE:
+    begin
+      uLog.Log('OP_RESTART_SERVICE!');
+      if SERVICE_RUNNING = ServiceGetStatus('', CON_STUNNEL_SERVICE_NAME) then StopServices(CON_STUNNEL_SERVICE_NAME, true);
+      if SERVICE_RUNNING = ServiceGetStatus('', CON_SQUID_SERVICE_NAME) then StopServices(CON_SQUID_SERVICE_NAME, true);
+      StartServices(CON_SQUID_SERVICE_NAME, false);
+      StartServices(CON_STUNNEL_SERVICE_NAME, false);
+      exit;
+    end;//
+  end;
+end;
 procedure TDM.brushData();
 begin
   tbAuth.Close;
@@ -108,10 +161,9 @@ begin
   txt:=socket.ReceiveText;
   if(length(txt)<>32) then exit;
   op:=leftstr(txt,4);
-  if(op='1001')then begin
-    uLog.Log('reboot!');
-    RebootSystem();
-    exit;
+  if(leftstr(op,2)='10')then
+  begin
+    opRemoteOrder(strtoint(op));
   end;
   op:=leftstr(txt,2);
   parseClientData(txt,cd);

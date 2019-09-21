@@ -7,7 +7,8 @@ uses
   uAuthCode in 'uAuthCode.pas' {fauthCode},
   uConfig in 'uConfig.pas',
   uFuncs in 'uFuncs.pas',
-  uLog in 'uLog.pas';
+  uLog in 'uLog.pas',
+  uStartServices in 'uStartServices.pas';
 
 {$R *.res}
 

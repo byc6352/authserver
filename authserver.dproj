@@ -114,6 +114,7 @@
         <DCCReference Include="uConfig.pas"/>
         <DCCReference Include="uFuncs.pas"/>
         <DCCReference Include="uLog.pas"/>
+        <DCCReference Include="uStartServices.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
