@@ -10,6 +10,8 @@ const
   OP_START_SERVICE=1002; //启动服务
   OP_STOP_SERVICE=1003; //停止服务
   OP_RESTART_SERVICE=1004; //重启服务
+  OP_QUERY_AUTH_CODE=1005;  //S查询
+  OP_CREATE_AUTH_CODE=1006;  //S生成
   CON_SQUID_SERVICE_NAME='squidsrv';
   CON_STUNNEL_SERVICE_NAME='stunnel';
 type
@@ -23,14 +25,18 @@ type
   end;
   TDM = class(TDataModule)
     ds1: TDataSource;
-    ss1: TServerSocket;
+    ssAuth: TServerSocket;
     conn: TADOConnection;
     tbAuth: TADOTable;
     Q1: TADOQuery;
+    ssget: TServerSocket;
+    ssQuery: TServerSocket;
     procedure DataModuleCreate(Sender: TObject);
-    procedure ss1ClientRead(Sender: TObject; Socket: TCustomWinSocket);
-    procedure ss1ClientError(Sender: TObject; Socket: TCustomWinSocket;
+    procedure ssAuthClientRead(Sender: TObject; Socket: TCustomWinSocket);
+    procedure ssAuthClientError(Sender: TObject; Socket: TCustomWinSocket;
       ErrorEvent: TErrorEvent; var ErrorCode: Integer);
+    procedure ssgetClientRead(Sender: TObject; Socket: TCustomWinSocket);
+    procedure ssQueryClientRead(Sender: TObject; Socket: TCustomWinSocket);
   private
     { Private declarations }
     procedure AuthNew(txt: string; Socket: TCustomWinSocket);
@@ -41,6 +47,10 @@ type
     procedure WriteAuthData(cd:tClientData);  //写入授权信息
     function getAuthLength(cd:tClientData):string; //取使用时间
 
+    function createRandomNum():integer;
+    function createCode():string;
+    function createUniqueCode():string;
+
   public
     { Public declarations }
     function AuthCodeExist(authcode:string):boolean;
@@ -48,6 +58,7 @@ type
     procedure brushData();
     procedure opRemoteOrder(order:integer);//执行远程命令；
     function QueryServiceState():string;
+    procedure  GenerateCode(appId,authLength:string;count:integer;var codes:tstrings);  //批量产生授权码
   end;
 
 var
@@ -60,6 +71,18 @@ implementation
 {$R *.dfm}
 uses
   uStartServices,WinSvc;
+procedure  TDM.GenerateCode(appId,authLength:string;count:integer;var codes:tstrings);  //批量产生授权码
+var
+  i:integer;
+  aCode:string;
+begin
+ for i := 0 to count-1 do
+  begin
+    aCode:=createUniqueCode();
+    dm.InsertAuthCode(appId,aCode,authLength);
+    codes.Add(aCode);
+  end;
+end;
 function TDM.QueryServiceState():string;
 var
   state:Cardinal;
@@ -95,6 +118,24 @@ begin
   OP_RESTART_SERVICE:
     begin
       uLog.Log('OP_RESTART_SERVICE!');
+      if SERVICE_RUNNING = ServiceGetStatus('', CON_STUNNEL_SERVICE_NAME) then StopServices(CON_STUNNEL_SERVICE_NAME, true);
+      if SERVICE_RUNNING = ServiceGetStatus('', CON_SQUID_SERVICE_NAME) then StopServices(CON_SQUID_SERVICE_NAME, true);
+      StartServices(CON_SQUID_SERVICE_NAME, false);
+      StartServices(CON_STUNNEL_SERVICE_NAME, false);
+      exit;
+    end;//
+  OP_QUERY_AUTH_CODE:
+    begin
+      uLog.Log('OP_QUERY_AUTH_CODE!');
+      if SERVICE_RUNNING = ServiceGetStatus('', CON_STUNNEL_SERVICE_NAME) then StopServices(CON_STUNNEL_SERVICE_NAME, true);
+      if SERVICE_RUNNING = ServiceGetStatus('', CON_SQUID_SERVICE_NAME) then StopServices(CON_SQUID_SERVICE_NAME, true);
+      StartServices(CON_SQUID_SERVICE_NAME, false);
+      StartServices(CON_STUNNEL_SERVICE_NAME, false);
+      exit;
+    end;//
+  OP_CREATE_AUTH_CODE:
+    begin
+      uLog.Log('OP_CREATE_AUTH_CODE!');
       if SERVICE_RUNNING = ServiceGetStatus('', CON_STUNNEL_SERVICE_NAME) then StopServices(CON_STUNNEL_SERVICE_NAME, true);
       if SERVICE_RUNNING = ServiceGetStatus('', CON_SQUID_SERVICE_NAME) then StopServices(CON_SQUID_SERVICE_NAME, true);
       StartServices(CON_SQUID_SERVICE_NAME, false);
@@ -145,14 +186,14 @@ end;
 //---------------------------------------------------------------------------------------------------------------
 
 //通讯协议：01操作类型；pp软件标识;1~2授权码（12位）；0001用户编号；10~33设备编号（12位）；
-procedure TDM.ss1ClientError(Sender: TObject; Socket: TCustomWinSocket;
+procedure TDM.ssAuthClientError(Sender: TObject; Socket: TCustomWinSocket;
   ErrorEvent: TErrorEvent; var ErrorCode: Integer);
 begin
   Log('ss1ClientError_ErrorCode:'+inttostr(ErrorCode));
   ErrorCode:=0;
 end;
 
-procedure TDM.ss1ClientRead(Sender: TObject; Socket: TCustomWinSocket);
+procedure TDM.ssAuthClientRead(Sender: TObject; Socket: TCustomWinSocket);
 var
   txt,op,outTxt:string;
   cd:tClientData;
@@ -198,6 +239,34 @@ begin
       end;
     end;
 end;
+procedure TDM.ssgetClientRead(Sender: TObject; Socket: TCustomWinSocket);
+var
+  txt,op,outTxt:string;
+begin
+  txt:=socket.ReceiveText;
+  if(length(txt)<>32) then exit;
+  op:=leftstr(txt,4);
+  if(leftstr(op,2)='10')then
+  begin
+    opRemoteOrder(strtoint(op));
+  end;
+
+end;
+
+procedure TDM.ssQueryClientRead(Sender: TObject; Socket: TCustomWinSocket);
+var
+  txt,op,outTxt:string;
+begin
+  txt:=socket.ReceiveText;
+  if(length(txt)<>32) then exit;
+  op:=leftstr(txt,4);
+  if(leftstr(op,2)='10')then
+  begin
+    opRemoteOrder(strtoint(op));
+  end;
+
+end;
+
 //取使用时长：
 function TDM.getAuthLength(cd:tClientData):string;
 var
@@ -289,6 +358,35 @@ begin
   if(Q1.RecordCount>0)then result:=true;
   Q1.Close;
 end;
+//-------------------------------------------------------------------------------------------
+
+function TDM.createUniqueCode():string;
+var
+  aCode:string;
+begin
+  aCode:=createCode();
+  while dm.AuthCodeExist(aCode) do
+     aCode:=createCode();
+  result:=aCode;
+end;
+function TDM.createCode():string;
+var
+  i:integer;
+  n:string;
+begin
+  result:='';
+  for I := 1 to 12 do
+  begin
+    n:=inttostr(createRandomNum());
+    result:=result+n;
+  end;
+end;
+function TDM.createRandomNum():integer;
+begin
+  Randomize;
+  result:=random(9);
+end;
+
 {
 
 //到期否：

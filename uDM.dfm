@@ -8,14 +8,14 @@ object DM: TDM
     Left = 183
     Top = 118
   end
-  object ss1: TServerSocket
+  object ssAuth: TServerSocket
     Active = True
     Port = 8888
     ServerType = stNonBlocking
-    OnClientRead = ss1ClientRead
-    OnClientError = ss1ClientError
-    Left = 112
-    Top = 80
+    OnClientRead = ssAuthClientRead
+    OnClientError = ssAuthClientError
+    Left = 16
+    Top = 56
   end
   object conn: TADOConnection
     ConnectionString = 
@@ -40,5 +40,23 @@ object DM: TDM
     Parameters = <>
     Left = 144
     Top = 8
+  end
+  object ssget: TServerSocket
+    Active = True
+    Port = 8887
+    ServerType = stNonBlocking
+    OnClientRead = ssgetClientRead
+    OnClientError = ssAuthClientError
+    Left = 67
+    Top = 59
+  end
+  object ssQuery: TServerSocket
+    Active = True
+    Port = 8889
+    ServerType = stNonBlocking
+    OnClientRead = ssQueryClientRead
+    OnClientError = ssAuthClientError
+    Left = 115
+    Top = 59
   end
 end

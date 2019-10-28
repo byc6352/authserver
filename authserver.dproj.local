@@ -2,22 +2,22 @@
 <BorlandProject>
 	<Transactions>
     <Transaction>2019/07/05 15:37:27.000.643,=C:\Users\HUASINE\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>2019/07/05 15:38:40.000.154,C:\Users\HUASINE\Documents\Embarcadero\Studio\Projects\Unit1.dfm=D:\works\delphi\authserver\uMain.dfm</Transaction>
-    <Transaction>2019/07/05 15:38:40.000.154,C:\Users\HUASINE\Documents\Embarcadero\Studio\Projects\Unit1.pas=D:\works\delphi\authserver\uMain.pas</Transaction>
-    <Transaction>2019/07/05 15:38:49.000.849,C:\Users\HUASINE\Documents\Embarcadero\Studio\Projects\Project1.dproj=D:\works\delphi\authserver\authserver.dproj</Transaction>
+    <Transaction>2019/07/05 15:38:40.000.154,D:\works\delphi\authserver\uMain.dfm=C:\Users\HUASINE\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2019/07/05 15:38:40.000.154,D:\works\delphi\authserver\uMain.pas=C:\Users\HUASINE\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2019/07/05 15:38:49.000.849,D:\works\delphi\authserver\authserver.dproj=C:\Users\HUASINE\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
     <Transaction>2019/07/05 15:55:37.000.502,=D:\works\delphi\authserver\Unit1.pas</Transaction>
-    <Transaction>2019/07/05 15:56:07.000.732,D:\works\delphi\authserver\Unit1.pas=D:\works\delphi\authserver\uDM.pas</Transaction>
-    <Transaction>2019/07/05 15:56:07.000.732,D:\works\delphi\authserver\Unit1.dfm=D:\works\delphi\authserver\uDM.dfm</Transaction>
+    <Transaction>2019/07/05 15:56:07.000.732,D:\works\delphi\authserver\uDM.dfm=D:\works\delphi\authserver\Unit1.dfm</Transaction>
+    <Transaction>2019/07/05 15:56:07.000.732,D:\works\delphi\authserver\uDM.pas=D:\works\delphi\authserver\Unit1.pas</Transaction>
     <Transaction>2019/07/05 16:07:28.000.149,=D:\works\delphi\authserver\Unit1.pas</Transaction>
-    <Transaction>2019/07/05 16:27:08.000.835,D:\works\delphi\authserver\Unit1.dfm=D:\works\delphi\authserver\uAuthCode.dfm</Transaction>
-    <Transaction>2019/07/05 16:27:08.000.835,D:\works\delphi\authserver\Unit1.pas=D:\works\delphi\authserver\uAuthCode.pas</Transaction>
+    <Transaction>2019/07/05 16:27:08.000.835,D:\works\delphi\authserver\uAuthCode.dfm=D:\works\delphi\authserver\Unit1.dfm</Transaction>
+    <Transaction>2019/07/05 16:27:08.000.835,D:\works\delphi\authserver\uAuthCode.pas=D:\works\delphi\authserver\Unit1.pas</Transaction>
     <Transaction>2019/07/06 00:07:02.000.002,=D:\works\delphi\authserver\Unit1.pas</Transaction>
-    <Transaction>2019/07/06 00:07:18.000.163,D:\works\delphi\authserver\Unit1.pas=D:\works\delphi\authserver\uConfig.pas</Transaction>
+    <Transaction>2019/07/06 00:07:18.000.163,D:\works\delphi\authserver\uConfig.pas=D:\works\delphi\authserver\Unit1.pas</Transaction>
     <Transaction>2019/07/06 00:34:38.000.171,=D:\works\delphi\authserver\Unit1.pas</Transaction>
-    <Transaction>2019/07/06 00:34:49.000.484,D:\works\delphi\authserver\Unit1.pas=D:\works\delphi\authserver\uFuncs.pas</Transaction>
+    <Transaction>2019/07/06 00:34:49.000.484,D:\works\delphi\authserver\uFuncs.pas=D:\works\delphi\authserver\Unit1.pas</Transaction>
     <Transaction>2019/07/06 09:09:20.000.195,=D:\works\delphi\authserver\Unit1.pas</Transaction>
-    <Transaction>2019/07/06 09:10:16.000.985,D:\works\delphi\authserver\Unit1.pas=D:\works\delphi\authserver\uLog.pas</Transaction>
-    <Transaction>2019/09/21 14:19:46.252,=D:\works\delphi\authserver\Unit1.pas</Transaction>
-    <Transaction>2019/09/21 14:29:54.562,D:\works\delphi\authserver\uStartServices.pas=D:\works\delphi\authserver\Unit1.pas</Transaction>
+    <Transaction>2019/07/06 09:10:16.000.985,D:\works\delphi\authserver\uLog.pas=D:\works\delphi\authserver\Unit1.pas</Transaction>
+    <Transaction>2019/09/21 14:19:46.000.252,=D:\works\delphi\authserver\Unit1.pas</Transaction>
+    <Transaction>2019/09/21 14:29:54.000.562,D:\works\delphi\authserver\Unit1.pas=D:\works\delphi\authserver\uStartServices.pas</Transaction>
   </Transactions>
 </BorlandProject>
