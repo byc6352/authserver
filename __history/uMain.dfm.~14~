@@ -21,6 +21,7 @@ object fMain: TfMain
     Height = 36
     Align = alTop
     TabOrder = 0
+    ExplicitWidth = 784
     object btnBrush: TBitBtn
       Left = 4
       Top = 4
@@ -55,17 +56,24 @@ object fMain: TfMain
       item
         Width = 50
       end>
+    ExplicitWidth = 784
   end
   object Page1: TPageControl
     Left = 0
     Top = 36
     Width = 1078
     Height = 707
-    ActivePage = tsApp
+    ActivePage = tsService
     Align = alClient
     TabOrder = 2
+    ExplicitLeft = 256
+    ExplicitTop = 304
+    ExplicitWidth = 289
+    ExplicitHeight = 193
     object tsAuth: TTabSheet
       Caption = #25480#26435#31649#29702
+      ExplicitWidth = 281
+      ExplicitHeight = 165
       object Grid1: TDBGrid
         Left = 0
         Top = 0
@@ -84,6 +92,8 @@ object fMain: TfMain
     object tsService: TTabSheet
       Caption = #26381#21153#31649#29702
       ImageIndex = 1
+      ExplicitWidth = 281
+      ExplicitHeight = 165
       object lbState: TLabel
         Left = 24
         Top = 80
@@ -162,24 +172,6 @@ object fMain: TfMain
         Caption = #26597#35810#26381#21153#29366#24577
         TabOrder = 7
         OnClick = btnQueryServiceClick
-      end
-    end
-    object tsApp: TTabSheet
-      Caption = 'APP'#31649#29702
-      ImageIndex = 2
-      object DBGrid1: TDBGrid
-        Left = 0
-        Top = 0
-        Width = 1070
-        Height = 679
-        Align = alClient
-        DataSource = DM.dsApp
-        TabOrder = 0
-        TitleFont.Charset = DEFAULT_CHARSET
-        TitleFont.Color = clWindowText
-        TitleFont.Height = -11
-        TitleFont.Name = 'Tahoma'
-        TitleFont.Style = []
       end
     end
   end

@@ -31,6 +31,8 @@ type
     Q1: TADOQuery;
     ssget: TServerSocket;
     ssQuery: TServerSocket;
+    tbApp: TADOTable;
+    dsApp: TDataSource;
     procedure DataModuleCreate(Sender: TObject);
     procedure ssAuthClientRead(Sender: TObject; Socket: TCustomWinSocket);
     procedure ssAuthClientError(Sender: TObject; Socket: TCustomWinSocket;
@@ -182,6 +184,7 @@ begin
   conn.ConnectionString:=uConfig.dbconn;
   conn.Connected:=true;
   tbAuth.Open;
+  tbapp.Open;
 end;
 //---------------------------------------------------------------------------------------------------------------
 

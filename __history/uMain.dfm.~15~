@@ -173,7 +173,6 @@ object fMain: TfMain
         Width = 1070
         Height = 679
         Align = alClient
-        DataSource = DM.dsApp
         TabOrder = 0
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText

@@ -38,8 +38,8 @@ object DM: TDM
   object Q1: TADOQuery
     Connection = conn
     Parameters = <>
-    Left = 8
-    Top = 112
+    Left = 144
+    Top = 8
   end
   object ssget: TServerSocket
     Active = True
@@ -58,17 +58,5 @@ object DM: TDM
     OnClientError = ssAuthClientError
     Left = 115
     Top = 59
-  end
-  object tbApp: TADOTable
-    Connection = conn
-    CursorType = ctStatic
-    TableName = 'App'
-    Left = 144
-    Top = 8
-  end
-  object dsApp: TDataSource
-    DataSet = tbApp
-    Left = 183
-    Top = 70
   end
 end
