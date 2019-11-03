@@ -285,7 +285,7 @@ begin
   cd.authCode:=s;
   s:=midstr(txt,17,4);
   cd.userID:=s;
-  s:=midstr(txt,21,12);
+  s:=midstr(txt,21,32);
   cd.deviceID:=s;
 end;
 procedure TDM.AuthNew(txt: string; Socket: TCustomWinSocket);
@@ -322,7 +322,7 @@ var
   tr:integer;
 begin
   txt:=socket.ReceiveText;
-  if(length(txt)<>32) then exit;
+  if(length(txt)<>52) then exit;
   op:=leftstr(txt,4);
   if(leftstr(op,2)='10')then
   begin

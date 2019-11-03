@@ -86,3 +86,65 @@ ss1ClientError_ErrorCode:10053
 ss1ClientError_ErrorCode:10053
 2019-11-01 03:25:22:658
 ss1ClientError_ErrorCode:10053
+2019-11-01 11:59:10:246
+ss1ClientError_ErrorCode:10053
+2019-11-01 13:30:08:385
+ss1ClientError_ErrorCode:10053
+2019-11-01 20:23:19:029
+ss1ClientError_ErrorCode:10053
+2019-11-01 21:35:17:812
+ss1ClientError_ErrorCode:10053
+2019-11-01 21:35:27:771
+ss1ClientError_ErrorCode:10053
+2019-11-01 21:35:37:772
+ss1ClientError_ErrorCode:10053
+2019-11-01 21:35:47:772
+ss1ClientError_ErrorCode:10053
+2019-11-01 21:54:21:073
+ss1ClientError_ErrorCode:10053
+2019-11-02 01:06:01:346
+ss1ClientError_ErrorCode:10053
+2019-11-02 01:07:02:306
+ss1ClientError_ErrorCode:10053
+2019-11-02 01:29:43:329
+ss1ClientError_ErrorCode:10053
+2019-11-02 02:38:30:702
+ss1ClientError_ErrorCode:10053
+2019-11-02 03:15:58:555
+ss1ClientError_ErrorCode:10053
+2019-11-02 03:33:04:807
+ss1ClientError_ErrorCode:10053
+2019-11-02 10:54:08:864
+ss1ClientError_ErrorCode:10053
+2019-11-02 10:54:25:720
+ss1ClientError_ErrorCode:10053
+2019-11-02 15:27:40:582
+ss1ClientError_ErrorCode:10053
+2019-11-02 18:01:08:215
+ss1ClientError_ErrorCode:10053
+2019-11-02 18:46:49:647
+ss1ClientError_ErrorCode:10053
+2019-11-02 20:17:40:824
+ss1ClientError_ErrorCode:10053
+2019-11-02 22:24:50:860
+ss1ClientError_ErrorCode:10053
+2019-11-03 03:21:09:358
+ss1ClientError_ErrorCode:10053
+2019-11-03 03:36:50:546
+ss1ClientError_ErrorCode:10053
+2019-11-03 04:52:02:517
+ss1ClientError_ErrorCode:10053
+2019-11-03 05:12:52:491
+ss1ClientError_ErrorCode:10053
+2019-11-03 08:06:24:746
+Authorize OK:365738881770
+2019-11-03 08:31:38:623
+Authorize OK:342214216343
+2019-11-03 09:55:05:530
+Authorize OK:145673746021
+2019-11-03 10:02:04:977
+Authorize Err:145673746021
+2019-11-03 10:02:04:991
+authenticate Err:145673746021
+2019-11-03 10:03:18:377
+Authorize OK:653028038721

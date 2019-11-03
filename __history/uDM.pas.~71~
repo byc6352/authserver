@@ -11,8 +11,15 @@ const
   OP_STOP_SERVICE=1003; //停止服务
   OP_RESTART_SERVICE=1004; //重启服务
   OP_QUERY_AUTH_CODE=1005;  //S查询
-  OP_QUERY_AUTH_USE=100501;  //S查询未授权
+  OP_QUERY_AUTH_USE=100500;  //S查询未授权
+  OP_QUERY_AUTH_DAY=100501;  //S查询当天
+  OP_QUERY_AUTH_WEEK=100502;  //S查询本周
+  OP_QUERY_AUTH_MONTH=100503;  //S查询本月
+  OP_QUERY_AUTH_MONTH_PRE=100504;  //S查询上月
+  OP_QUERY_AUTH_ALL=100505;  //S查询全部
+
   OP_CREATE_AUTH_CODE=1006;  //S生成
+
   CON_SQUID_SERVICE_NAME='squidsrv';
   CON_STUNNEL_SERVICE_NAME='stunnel';
 type
@@ -55,6 +62,7 @@ type
     function createUniqueCode():string;
 
     function getUseCodes():string;          //查询未授权的授权码
+    function getUsedCodes(order:integer):string;  //查询已授权的码：
     function getGenerateCode(param:string):string;
   public
     { Public declarations }
@@ -77,6 +85,58 @@ implementation
 {$R *.dfm}
 uses
   uStartServices,WinSvc;
+//查询已授权的码：
+//select 名称,授权码,授权时长,授权日期,到期状态 from 授权表 where (DateDiff('d',授权日期,Date())=0) and 授权否=true and (名称='手机版' or 名称='电脑版' or 名称='服务器版')
+function TDM.getUsedCodes(order:integer):string;
+const
+  MAX_NAME_LEN=16;
+  MAX_TIME_LEN=12;
+var
+  sql,tmp:string;
+  len:integer;
+begin
+  result:='';
+  sql:='';
+  Q1.Close;
+  case order of
+  OP_QUERY_AUTH_DAY:
+    begin
+      sql:='select 名称,授权码,授权时长,授权日期,到期状态 from 授权表 where (DateDiff("d",授权日期,Date())=0) and 授权否=true and (名称="手机版" or 名称="电脑版" or 名称="服务器版")';
+    end;
+  OP_QUERY_AUTH_WEEK:
+    begin
+      sql:='select 名称,授权码,授权时长,授权日期,到期状态 from 授权表 where (DateDiff("ww",授权日期,Date())=0) and 授权否=true and (名称="手机版" or 名称="电脑版" or 名称="服务器版")';
+    end;
+  OP_QUERY_AUTH_MONTH:
+    begin
+      sql:='select 名称,授权码,授权时长,授权日期,到期状态 from 授权表 where (DateDiff("m",授权日期,Date())=0) and 授权否=true and (名称="手机版" or 名称="电脑版" or 名称="服务器版")';
+    end;
+  OP_QUERY_AUTH_MONTH_PRE:
+    begin
+      sql:='select 名称,授权码,授权时长,授权日期,到期状态 from 授权表 where (DateDiff("m",授权日期,Date())=1) and 授权否=true and (名称="手机版" or 名称="电脑版" or 名称="服务器版")';
+    end;
+  OP_QUERY_AUTH_ALL:
+    begin
+      sql:='select 名称,授权码,授权时长,授权日期,到期状态 from 授权表 where 授权否=true and (名称="手机版" or 名称="电脑版" or 名称="服务器版")';
+    end;
+  end;
+  if(sql='')then exit;
+try
+  Q1.SQL.Text:=sql;
+  Q1.Open;
+  if(Q1.RecordCount=0)then exit;
+  Q1.First;
+  while not Q1.Eof do
+  begin
+    result:=result+Q1.Fields[0].asString+','+Q1.Fields[1].asString+','+Q1.Fields[2].asString+','+Q1.Fields[3].asString+','+Q1.Fields[4].asString+#13#10;
+    Q1.Next;
+  end;
+  result:=result+#13#10;
+finally
+  Q1.Close;
+end;
+end;
+
 function TDM.getGenerateCode(param:string):string;
 var
   ss:tstrings;
@@ -91,8 +151,10 @@ try
   appid:=ss[0];
   authlen:=ss[1];
   count:=strtoint(ss[2]);
+  ss.clear;
   GenerateCode(appid,authlen,count,ss);
   result:=ss.Text;
+  result:=result+#13#10;
 finally
   ss.Free;
 end;
@@ -134,15 +196,19 @@ begin
       if(order2=OP_QUERY_AUTH_USE)then //未授权查询
       begin
         sendText:=ansiString(getUseCodes());
+        if(sendText='')then exit;
         socket.SendText(sendText);
       end else begin //已授权查询
-
+        sendText:=ansiString(getUsedCodes(order2));
+        if(sendText='')then sendText:=#13#10#13#10;
+        socket.SendText(sendText);
       end;
     end;
     OP_CREATE_AUTH_CODE:               //生成
     begin
-      data:=midstr(txt,5,pos(';',txt)-4);
+      data:=midstr(txt,5,pos(';',txt)-5);
       sendText:=ansiString(getGenerateCode(data));
+      if(sendText='')then exit;
       socket.SendText(sendText);
     end;
   end;
