@@ -28,6 +28,8 @@ type
     lbState: TLabel;
     tsApp: TTabSheet;
     DBGrid1: TDBGrid;
+    tsAuthEdit: TTabSheet;
+    DBGrid2: TDBGrid;
     procedure btnCreateCodeClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure btnBrushClick(Sender: TObject);

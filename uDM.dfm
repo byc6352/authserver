@@ -1,12 +1,12 @@
 object DM: TDM
   OldCreateOrder = False
   OnCreate = DataModuleCreate
-  Height = 190
-  Width = 251
+  Height = 307
+  Width = 578
   object ds1: TDataSource
     DataSet = tbAuth
-    Left = 183
-    Top = 118
+    Left = 247
+    Top = 54
   end
   object ssAuth: TServerSocket
     Active = True
@@ -32,14 +32,13 @@ object DM: TDM
     Connection = conn
     CursorType = ctStatic
     TableName = #25480#26435#34920
-    Left = 72
-    Top = 8
+    Left = 248
   end
   object Q1: TADOQuery
     Connection = conn
     Parameters = <>
     Left = 8
-    Top = 112
+    Top = 144
   end
   object ssget: TServerSocket
     Active = True
@@ -63,12 +62,22 @@ object DM: TDM
     Connection = conn
     CursorType = ctStatic
     TableName = 'App'
-    Left = 144
-    Top = 8
+    Left = 512
   end
   object dsApp: TDataSource
     DataSet = tbApp
-    Left = 183
-    Top = 70
+    Left = 519
+    Top = 46
+  end
+  object tbAuthEdit: TADOTable
+    Connection = conn
+    CursorType = ctStatic
+    TableName = 'auth'
+    Left = 408
+  end
+  object dsAuthEdit: TDataSource
+    DataSet = tbAuthEdit
+    Left = 407
+    Top = 54
   end
 end

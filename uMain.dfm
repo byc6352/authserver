@@ -61,11 +61,11 @@ object fMain: TfMain
     Top = 36
     Width = 1078
     Height = 707
-    ActivePage = tsApp
+    ActivePage = tsAuthEdit
     Align = alClient
     TabOrder = 2
     object tsAuth: TTabSheet
-      Caption = #25480#26435#31649#29702
+      Caption = #25480#26435#26597#35810
       object Grid1: TDBGrid
         Left = 0
         Top = 0
@@ -174,6 +174,24 @@ object fMain: TfMain
         Height = 679
         Align = alClient
         DataSource = DM.dsApp
+        TabOrder = 0
+        TitleFont.Charset = DEFAULT_CHARSET
+        TitleFont.Color = clWindowText
+        TitleFont.Height = -11
+        TitleFont.Name = 'Tahoma'
+        TitleFont.Style = []
+      end
+    end
+    object tsAuthEdit: TTabSheet
+      Caption = #25480#26435#31649#29702
+      ImageIndex = 3
+      object DBGrid2: TDBGrid
+        Left = 0
+        Top = 0
+        Width = 1070
+        Height = 679
+        Align = alClient
+        DataSource = DM.dsAuthEdit
         TabOrder = 0
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText

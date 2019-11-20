@@ -41,6 +41,8 @@ type
     ssQuery: TServerSocket;
     tbApp: TADOTable;
     dsApp: TDataSource;
+    tbAuthEdit: TADOTable;
+    dsAuthEdit: TDataSource;
     procedure DataModuleCreate(Sender: TObject);
     procedure ssAuthClientRead(Sender: TObject; Socket: TCustomWinSocket);
     procedure ssAuthClientError(Sender: TObject; Socket: TCustomWinSocket;
@@ -268,10 +270,14 @@ end;
 procedure TDM.brushData();
 begin
   tbAuth.Close;
+  tbApp.Close;
+  tbAuthEdit.Close;
   conn.Connected:=false;
   conn.ConnectionString:=uConfig.dbconn;
   conn.Connected:=true;
   tbAuth.Open;
+  tbApp.Open;
+  tbAuthEdit.Open;
 end;
 procedure TDM.parseClientData(txt:string;var cd:tClientData);
 var
@@ -298,12 +304,7 @@ begin
 end;
 procedure TDM.DataModuleCreate(Sender: TObject);
 begin
-  tbAuth.Close;
-  conn.Connected:=false;
-  conn.ConnectionString:=uConfig.dbconn;
-  conn.Connected:=true;
-  tbAuth.Open;
-  tbapp.Open;
+  BrushData();
 end;
 //---------------------------------------------------------------------------------------------------------------
 
