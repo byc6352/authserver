@@ -10,16 +10,18 @@ uses
 type
   TfauthCode = class(TForm)
     memCode: TMemo;
-    ToolBar1: TToolBar;
     StatusBar1: TStatusBar;
-    edtAppID: TEdit;
+    Panel1: TPanel;
     Label1: TLabel;
+    edtAppID: TEdit;
     Label2: TLabel;
     edtLength: TEdit;
     Label3: TLabel;
     edtCount: TEdit;
     btnCreateCode: TBitBtn;
+    btnClose: TBitBtn;
     procedure btnCreateCodeClick(Sender: TObject);
+    procedure btnCloseClick(Sender: TObject);
   private
     { Private declarations }
     //function createUniqueCode():string;
@@ -35,6 +37,11 @@ implementation
 
 {$R *.dfm}
 
+
+procedure TfauthCode.btnCloseClick(Sender: TObject);
+begin
+close;
+end;
 
 procedure TfauthCode.btnCreateCodeClick(Sender: TObject);
 var

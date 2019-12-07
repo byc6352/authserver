@@ -5,7 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Grids, Vcl.DBGrids,uDM, uAuthCode,uConfig,
-  Vcl.ComCtrls, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls,uFuncs,shellapi;
+  Vcl.ComCtrls, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls,uFuncs,shellapi,
+  Vcl.DBCtrls;
 
 type
   TfMain = class(TForm)
@@ -16,7 +17,7 @@ type
     Page1: TPageControl;
     tsAuth: TTabSheet;
     tsService: TTabSheet;
-    Grid1: TDBGrid;
+    GridAuthState: TDBGrid;
     btnReboot: TBitBtn;
     btnStartService: TBitBtn;
     btnStopService: TBitBtn;
@@ -27,9 +28,14 @@ type
     btnQueryService: TBitBtn;
     lbState: TLabel;
     tsApp: TTabSheet;
-    DBGrid1: TDBGrid;
+    gridApp: TDBGrid;
     tsAuthEdit: TTabSheet;
-    DBGrid2: TDBGrid;
+    gridAuth: TDBGrid;
+    btnClose: TBitBtn;
+    Panel2: TPanel;
+    ng1: TDBNavigator;
+    Panel3: TPanel;
+    Ng2: TDBNavigator;
     procedure btnCreateCodeClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure btnBrushClick(Sender: TObject);
@@ -41,10 +47,12 @@ type
     procedure btnStartDUmeterClick(Sender: TObject);
     procedure btnStartTaskmgrClick(Sender: TObject);
     procedure btnQueryServiceClick(Sender: TObject);
+    procedure btnCloseClick(Sender: TObject);
   private
     { Private declarations }
     procedure ColumnWidth();
     procedure restartMe();
+    procedure MakeDBGridColumnsAutoFixItsWidth(objDBGrid:TDBGrid);
   public
     { Public declarations }
   end;
@@ -55,6 +63,68 @@ var
 implementation
 
 {$R *.dfm}
+procedure TfMain.MakeDBGridColumnsAutoFixItsWidth(objDBGrid:TDBGrid);
+
+var
+
+cc:integer;
+
+i,tmpLength:integer;
+
+objDataSet:TDataSet;
+
+aDgCLength:array of integer;
+
+begin
+
+cc:=objDbGrid.Columns.Count-1;
+
+objDataSet:=objDbGrid.DataSource.DataSet;
+
+setlength(aDgCLength,cc+1);
+
+for i:=0 to cc do
+
+begin
+
+aDgCLength[i]:= length(objDbGrid.Columns[i].Title.Caption);
+
+end;
+
+objDataSet.First;
+
+while not objDataSet.Eof do
+
+begin
+
+for i:=0 to cc do
+
+begin
+
+tmpLength:=length(objDataSet.Fields.Fields[i].AsString);
+
+if tmpLength>aDgCLength[i]
+
+then aDgCLength[i]:=tmpLength;
+
+end;
+
+objDataSet.Next;
+
+end;
+
+for i:=0 to cc do
+
+begin
+
+objDbGrid.Columns[i].Width:=aDgCLength[i]*7;
+
+end;
+
+end;
+
+
+
 procedure TfMain.restartMe();
 const
   APP_ID='auth';
@@ -68,6 +138,7 @@ begin
   //dm.conn.ConnectionString:=uConfig.dbConn;
   //dm.conn.Connected:=true;
   //dm.tbAuth.Open;
+  {
   fmain.Grid1.Columns[0].Width:=40;
   fmain.Grid1.Columns[1].Width:=100;
   fmain.Grid1.Columns[2].Width:=100;
@@ -78,7 +149,13 @@ begin
   fmain.Grid1.Columns[7].Width:=40;
   fmain.Grid1.Columns[6].Width:=80;
   fmain.Grid1.Columns[7].Width:=80;
+  }
 end;
+procedure TfMain.btnCloseClick(Sender: TObject);
+begin
+  close;
+end;
+
 procedure TfMain.btnCreateCodeClick(Sender: TObject);
 begin
   fAuthCode.Show;
@@ -129,7 +206,9 @@ var
   i:integer;
 begin
   dm.brushData();
-
+  MakeDBGridColumnsAutoFixItsWidth(gridAuthState);
+  MakeDBGridColumnsAutoFixItsWidth(gridAuth);
+  MakeDBGridColumnsAutoFixItsWidth(gridApp);
 end;
 
 procedure TfMain.FormShow(Sender: TObject);
@@ -140,6 +219,9 @@ begin
  ColumnWidth();
  page1.ActivePageIndex:=0;
  lbState.Caption:=dm.QueryServiceState();
+ MakeDBGridColumnsAutoFixItsWidth(gridAuthState);
+ MakeDBGridColumnsAutoFixItsWidth(gridAuth);
+ MakeDBGridColumnsAutoFixItsWidth(gridApp);
 end;
 
 end.

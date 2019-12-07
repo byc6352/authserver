@@ -1,9 +1,9 @@
 object fauthCode: TfauthCode
   Left = 0
   Top = 0
-  Caption = 'fauthCode'
+  Caption = #29983#25104#25480#26435#30721
   ClientHeight = 634
-  ClientWidth = 635
+  ClientWidth = 677
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -15,79 +15,17 @@ object fauthCode: TfauthCode
   TextHeight = 13
   object memCode: TMemo
     Left = 0
-    Top = 29
-    Width = 635
-    Height = 586
+    Top = 41
+    Width = 677
+    Height = 574
     Align = alClient
+    ScrollBars = ssBoth
     TabOrder = 0
-  end
-  object ToolBar1: TToolBar
-    Left = 0
-    Top = 0
-    Width = 635
-    Height = 29
-    ButtonHeight = 24
-    Caption = 'ToolBar1'
-    TabOrder = 1
-    object Label1: TLabel
-      Left = 0
-      Top = 0
-      Width = 36
-      Height = 24
-      Caption = #26631#35782#65306
-    end
-    object edtAppID: TEdit
-      Left = 36
-      Top = 0
-      Width = 60
-      Height = 24
-      TabOrder = 0
-      Text = 'ca'
-    end
-    object Label2: TLabel
-      Left = 96
-      Top = 0
-      Width = 68
-      Height = 24
-      Caption = #26102#38271'('#23567#26102')'#65306
-    end
-    object edtLength: TEdit
-      Left = 164
-      Top = 0
-      Width = 60
-      Height = 24
-      TabOrder = 1
-      Text = '720'
-    end
-    object Label3: TLabel
-      Left = 224
-      Top = 0
-      Width = 36
-      Height = 24
-      Caption = #25968#37327#65306
-    end
-    object edtCount: TEdit
-      Left = 260
-      Top = 0
-      Width = 60
-      Height = 24
-      TabOrder = 2
-      Text = '10'
-    end
-    object btnCreateCode: TBitBtn
-      Left = 320
-      Top = 0
-      Width = 75
-      Height = 24
-      Caption = #29983#25104
-      TabOrder = 3
-      OnClick = btnCreateCodeClick
-    end
   end
   object StatusBar1: TStatusBar
     Left = 0
     Top = 615
-    Width = 635
+    Width = 677
     Height = 19
     Panels = <
       item
@@ -99,5 +37,80 @@ object fauthCode: TfauthCode
       item
         Width = 50
       end>
+    ExplicitWidth = 635
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 677
+    Height = 41
+    Align = alTop
+    TabOrder = 2
+    ExplicitLeft = 8
+    ExplicitTop = 88
+    ExplicitWidth = 609
+    object Label1: TLabel
+      Left = 8
+      Top = 12
+      Width = 36
+      Height = 13
+      Caption = #26631#35782#65306
+    end
+    object Label2: TLabel
+      Left = 136
+      Top = 12
+      Width = 68
+      Height = 13
+      Caption = #26102#38271'('#23567#26102')'#65306
+    end
+    object Label3: TLabel
+      Left = 299
+      Top = 12
+      Width = 36
+      Height = 13
+      Caption = #25968#37327#65306
+    end
+    object edtAppID: TEdit
+      Left = 43
+      Top = 8
+      Width = 80
+      Height = 21
+      TabOrder = 0
+      Text = 'ca'
+    end
+    object edtLength: TEdit
+      Left = 203
+      Top = 8
+      Width = 90
+      Height = 21
+      TabOrder = 1
+      Text = '720'
+    end
+    object edtCount: TEdit
+      Left = 337
+      Top = 8
+      Width = 80
+      Height = 21
+      TabOrder = 2
+      Text = '10'
+    end
+    object btnCreateCode: TBitBtn
+      Left = 434
+      Top = 2
+      Width = 75
+      Height = 32
+      Caption = #29983#25104
+      TabOrder = 3
+      OnClick = btnCreateCodeClick
+    end
+    object btnClose: TBitBtn
+      Left = 599
+      Top = 2
+      Width = 75
+      Height = 32
+      Caption = #20851#38381
+      TabOrder = 4
+      OnClick = btnCloseClick
+    end
   end
 end
