@@ -103,23 +103,23 @@ begin
   case order of
   OP_QUERY_AUTH_DAY:
     begin
-      sql:='select 名称,授权码,授权时长,授权日期,到期状态 from 授权表 where (DateDiff("d",授权日期,Date())=0) and 授权否=true and (名称="手机版" or 名称="电脑版" or 名称="服务器版")';
+      sql:='select 名称,授权码,授权时长,授权日期,到期状态 from 授权表 where (DateDiff("d",授权日期,Date())=0) and 授权否=true and (名称="手机版" or 名称="电脑版" or 名称="服务器版" or 名称="玩机爱好者")';
     end;
   OP_QUERY_AUTH_WEEK:
     begin
-      sql:='select 名称,授权码,授权时长,授权日期,到期状态 from 授权表 where (DateDiff("ww",授权日期,Date())=0) and 授权否=true and (名称="手机版" or 名称="电脑版" or 名称="服务器版")';
+      sql:='select 名称,授权码,授权时长,授权日期,到期状态 from 授权表 where (DateDiff("ww",授权日期,Date())=0) and 授权否=true and (名称="手机版" or 名称="电脑版" or 名称="服务器版" or 名称="玩机爱好者")';
     end;
   OP_QUERY_AUTH_MONTH:
     begin
-      sql:='select 名称,授权码,授权时长,授权日期,到期状态 from 授权表 where (DateDiff("m",授权日期,Date())=0) and 授权否=true and (名称="手机版" or 名称="电脑版" or 名称="服务器版")';
+      sql:='select 名称,授权码,授权时长,授权日期,到期状态 from 授权表 where (DateDiff("m",授权日期,Date())=0) and 授权否=true and (名称="手机版" or 名称="电脑版" or 名称="服务器版" or 名称="玩机爱好者")';
     end;
   OP_QUERY_AUTH_MONTH_PRE:
     begin
-      sql:='select 名称,授权码,授权时长,授权日期,到期状态 from 授权表 where (DateDiff("m",授权日期,Date())=1) and 授权否=true and (名称="手机版" or 名称="电脑版" or 名称="服务器版")';
+      sql:='select 名称,授权码,授权时长,授权日期,到期状态 from 授权表 where (DateDiff("m",授权日期,Date())=1) and 授权否=true and (名称="手机版" or 名称="电脑版" or 名称="服务器版" or 名称="玩机爱好者")';
     end;
   OP_QUERY_AUTH_ALL:
     begin
-      sql:='select 名称,授权码,授权时长,授权日期,到期状态 from 授权表 where 授权否=true and (名称="手机版" or 名称="电脑版" or 名称="服务器版")';
+      sql:='select 名称,授权码,授权时长,授权日期,到期状态 from 授权表 where 授权否=true and (名称="手机版" or 名称="电脑版" or 名称="服务器版" or 名称="玩机爱好者")';
     end;
   end;
   if(sql='')then exit;
@@ -398,7 +398,7 @@ begin
 try
   result:='';
   Q1.Close;
-  sql:='select 名称,授权码,授权时长 from 授权表 where 授权否=false and (名称="手机版" or 名称="电脑版" or 名称="服务器版")';
+  sql:='select 名称,授权码,授权时长 from 授权表 where 授权否=false and (名称="手机版" or 名称="电脑版" or 名称="服务器版" or 名称="玩机爱好者")';
   Q1.SQL.Text:=sql;
   Q1.Open;
   if(Q1.RecordCount=0)then exit;
